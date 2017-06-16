@@ -61,15 +61,18 @@ averageLoopTime <- function(trajectory) {
     time <- 0
     count <- 0
     x <- 0
+    index <- 0
     initial <- trajectory[1]
 
     for (i in trajectory) {
-        count <- count + 1
-        if (initial == i) {
+        if ((initial == i) && ( index != 0 )) {
             time <- time + count
             x = x + 1
             count <- 0
         }
+
+        count <- count + 1
+        index <- index + 1
     }
 
     return (time / x)
@@ -77,14 +80,12 @@ averageLoopTime <- function(trajectory) {
 
 print(mat)
 
-matTrajectory <- matrixTransition(mat, 100000, 3)
+matTrajectory <- matrixTransition(mat, 20, 3)
 
-print(table(matTrajectory))
+print(matTrajectory)
 
-#print(matTrajectory)
+#barDiagram(matTrajectory)
 
-barDiagram(matTrajectory)
-
-#print(averageLoopTime(matTrajectory))
+print(averageLoopTime(matTrajectory))
 
 print(matrixPower(mat, 50))
