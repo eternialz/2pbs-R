@@ -1,10 +1,18 @@
 library(expm)
 
 mat <- matrix(
-    c(3/5, 1/10, 3/4, 0, 3/10, 2/5, 0, 0, 0, 1/2, 1/5, 0, 1/10, 0, 1/20, 1),
-    nrow = 4,
-    ncol = 4,
+    c(0, 3/10, 1/2, 7/10, 2/5, 1/2, 3/10, 3/10, 0),
+    nrow = 3,
+    ncol = 3,
     byrow = TRUE)
+
+# manger = 1
+# dormir = 2
+# jouer = 3
+
+#       (0.0, 0.7, 0.3)
+#   P = (0.3, 0.4, 0.3)
+#       (0.5, 0.5, 0.0)
 
 matrixPower <- function(P, n)
 {
@@ -69,10 +77,14 @@ averageLoopTime <- function(trajectory) {
 
 print(mat)
 
-matTrajectory <- matrixTransition(mat, 50, 1)
+matTrajectory <- matrixTransition(mat, 100000, 3)
 
-print(matTrajectory)
+print(table(matTrajectory))
+
+#print(matTrajectory)
 
 barDiagram(matTrajectory)
 
-print(averageLoopTime(matTrajectory))
+#print(averageLoopTime(matTrajectory))
+
+print(matrixPower(mat, 50))
