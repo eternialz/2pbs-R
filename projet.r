@@ -92,26 +92,25 @@ khiTest <- function(obsData, theoValues) {
     #Here degree of freedom is 2 and we choose alpha = 0.05
     obsValues <- as.vector(obsData)
     khiDeux <- 0
-    
+
     for(i in 1:(length(obsData))){
         khiDeux <- khiDeux + khiTerm(obsValues[i], theoValues[i])
     }
     if (khiDeux < qchisq(0.95, 2)) {
         return(TRUE)
     }
-    
+
     return(FALSE)
 }
 
 print(mat)
 
-matTrajectory <- matrixTransition(mat, 1000000, 1)
+matTrajectory <- matrixTransition(mat, 1000000, 3)
 
 print(table(matTrajectory))
 
-print(table(matTrajectory))
-#barDiagram(matTrajectory)
+barDiagram(matTrajectory)
 
 print(averageLoopTime(matTrajectory))
 
-print(matrixPower(mat, 50))
+#print(matrixPower(mat, 50))
