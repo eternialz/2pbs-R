@@ -43,13 +43,15 @@ matrixTransition <- function(P, n, x) {
         for (probability in probabilities) {
 
             if ((random > count) && ( random < probability + count )) {
-                trajectory <- append(trajectory, result)
+                trajectory[time + 1] <- result
                 x <- result
+
             }
 
             count <- count + probability
             result <- result + 1
         }
+        print(time)
     }
 
     return(trajectory)
@@ -103,10 +105,11 @@ khiTest <- function(obsData, theoValues) {
 
 print(mat)
 
-matTrajectory <- matrixTransition(mat, 20, 3)
+matTrajectory <- matrixTransition(mat, 1000000, 1)
 
 print(table(matTrajectory))
 
+print(table(matTrajectory))
 #barDiagram(matTrajectory)
 
 print(averageLoopTime(matTrajectory))
