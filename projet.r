@@ -6,6 +6,8 @@ mat <- matrix(
     ncol = 3,
     byrow = TRUE)
 
+theoDataValues <- c(45/169, 85/169, 39/169)
+
 # manger = 1
 # dormir = 2
 # jouer = 3
@@ -83,11 +85,10 @@ khiTerm <- function(obsValue, theoValue) {
     return(((obsValue + theoValue) ^ 2) / theoValue)
 }
 
-khiTest <- function(obsData, theoData) {
+khiTest <- function(obsData, theoValues) {
     #obsData and theoData are table
     #Here degree of freedom is 2 and we choose alpha = 0.05
     obsValues <- as.vector(obsData)
-    theoValues <- as.vector(theoData)
     khiDeux <- 0
     
     for(i in 1:(length(obsData))){
