@@ -78,11 +78,33 @@ averageLoopTime <- function(trajectory) {
     return (time / x)
 }
 
+khiTerm <- function(obsValue, theoValue) {
+    #obsValue and theoValue are numbers
+    return(((obsValue + theoValue) ^ 2) / theoValue)
+}
+
+khiTest <- function(obsData, theoData) {
+    #obsData and theoData are table
+    #Here degree of freedom is 2 and we choose alpha = 0.05
+    obsValues <- as.vector(obsData)
+    theoValues <- as.vector(theoData)
+    khiDeux <- 0
+    
+    for(i in 1:(length(obsData))){
+        khiDeux <- khiDeux + khiTerm(obsValues[i], theoValues[i])
+    }
+    if (khiDeux < qchisq(0.95, 2)) {
+        return(TRUE)
+    }
+    
+    return(FALSE)
+}
+
 print(mat)
 
 matTrajectory <- matrixTransition(mat, 20, 3)
 
-print(matTrajectory)
+print(table(matTrajectory))
 
 #barDiagram(matTrajectory)
 
