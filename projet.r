@@ -7,7 +7,9 @@ mat <- matrix(
     byrow = TRUE)
 
 theoDataValues <- c(45/169, 85/169, 39/169)
-
+data1 <- c(266461, 502617, 230924)
+data2 <- c(266261, 503079, 230662)
+data3 <- c(266461, 502275, 231275)
 # manger = 1
 # dormir = 2
 # jouer = 3
@@ -51,7 +53,7 @@ matrixTransition <- function(P, n, x) {
             count <- count + probability
             result <- result + 1
         }
-        print(time)
+
     }
 
     return(trajectory)
@@ -84,16 +86,18 @@ averageLoopTime <- function(trajectory) {
 
 khiTerm <- function(obsValue, theoValue) {
     #obsValue and theoValue are numbers
-    return(((obsValue + theoValue) ^ 2) / theoValue)
+    return(((obsValue - theoValue) * (obsValue - theoValue)) / theoValue)
 }
 
 khiTest <- function(obsData, theoValues) {
     #obsData and theoData are table
     #Here degree of freedom is 2 and we choose alpha = 0.05
     obsValues <- as.vector(obsData)
+    #obsValues <- obsValues/sum(obsValues)
+    theoValues <- theoValues*sum(obsValues)
     khiDeux <- 0
 
-    for(i in 1:(length(obsData))){
+    for(i in 1:(length(obsValues))){
         khiDeux <- khiDeux + khiTerm(obsValues[i], theoValues[i])
     }
     if (khiDeux < qchisq(0.95, 2)) {
@@ -103,14 +107,34 @@ khiTest <- function(obsData, theoValues) {
     return(FALSE)
 }
 
+simulateTraj <- function(P, times, state, simTimes, theoValues) {
+    results <- c()
+    for(i in 1:times){
+      traj <- table(matrixTransition(P, simTimes, state))
+      results[i] <- khiTest(traj, theoValues)
+    }
+    return(table(results))
+}
+
 print(mat)
 
-matTrajectory <- matrixTransition(mat, 1000000, 3)
+##Test for 3.2.5
+print(khiTest(data1, theoDataValues))
+print(khiTest(data2, theoDataValues))
+print(khiTest(data3, theoDataValues))
 
-print(table(matTrajectory))
+print(simulateTraj(mat, 1000, 1, 50, theoDataValues))
+print(simulateTraj(mat, 1000, 2, 50, theoDataValues))
+print(simulateTraj(mat, 1000, 3, 50, theoDataValues))
+#matTrajectory <- matrixTransition(mat, 1000000, 3)
 
-barDiagram(matTrajectory)
+#print(table(matTrajectory))
 
-print(averageLoopTime(matTrajectory))
+#barDiagram(matTrajectory)
 
-#print(matrixPower(mat, 50))
+#print(averageLoopTime(matTrajectory))
+mat50 <- matrixPower(mat, 50)
+print(simulateTraj(mat, 1000, 1, 50, mat50[,1]))
+print(simulateTraj(mat, 1000, 2, 50, mat50[,2]))
+print(simulateTraj(mat, 1000, 3, 50, mat50[,3]))
+#print(mat50)
